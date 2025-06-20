@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>mobileconect- Video Call & File Sharing</title>
+  <style>
+    :root {
+      --primary-color: #4285f4;
+      --secondary-color: #34a853;
+      --accent-color: #ea4335;
+      --dark-color: #202124;
+      --light-color: #f8f9fa;
+      --gray-color: #dadce0;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f5f5f5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* Header Styles */
+    header {
+      background-color: var(--dark-color);
+      color: white;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    
+    .logo-icon {
+      font-size: 2rem;
+    }
+    
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 20px;
+    }
+    
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+    }
+    
+    nav a:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Main Content Styles */
+    main {
+      flex: 1;
+      max-width: 1200px;
+      width: 100%;
+      margin: 2rem auto;
+      padding: 0 2rem;
+    }
+    
+    .hero {
+      text-align: center;
+      padding: 3rem 0;
+    }
+    
+    h1 {
+      color: var(--dark-color);
+      margin-bottom: 1.5rem;
+      font-size: 2.5rem;
+      line-height: 1.2;
+    }
+    
+    h2 {
+      color: var(--dark-color);
+      margin-bottom: 1.5rem;
+      font-size: 2rem;
+    }
+    
+    h3 {
+      color: var(--dark-color);
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+    
+    .app-description {
+      margin-bottom: 2rem;
+      color: #555;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 1.1rem;
+    }
+    
+    .cta-button {
+      display: inline-block;
+      padding: 0.8rem 1.8rem;
+      background: var(--primary-color);
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: 500;
+      transition: background-color 0.3s;
+      margin-top: 1rem;
+    }
+    
+    .cta-button:hover {
+      background: #3367d6;
+    }
+    
+    hr {
+      margin: 2rem 0;
+      border: 0;
+      height: 1px;
+      background: var(--gray-color);
+    }
+    
+    /* Features Section */
+    #features {
+      padding: 3rem 0;
+    }
+    
+    .section-title {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 2rem;
+      color: var(--dark-color);
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    
+    .feature-card {
+      background: white;
+      border-radius: 8px;
+      padding: 2rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .feature-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--primary-color);
+    }
+    
+    .feature-title {
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      color: var(--dark-color);
+    }
+    
+    /* How It Works Section */
+    #how-it-works {
+      padding: 3rem 0;
+      background-color: white;
+      margin: 2rem -2rem;
+      padding: 3rem 2rem;
+    }
+    
+    .steps-container {
+      max-width: 800px;
+      margin: 0 auto;
+      counter-reset: step-counter;
+    }
+    
+    .step {
+      position: relative;
+      padding-left: 80px;
+      margin-bottom: 2rem;
+      counter-increment: step-counter;
+    }
+    
+    .step:before {
+      content: counter(step-counter);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 60px;
+      height: 60px;
+      background: var(--primary-color);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    
+    .step-title {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+      color: var(--dark-color);
+    }
+    
+    /* Video Section */
+    #connection {
+      padding: 3rem 0;
+    }
+    
+    #self {
+      margin: 2rem 0;
+      padding: 1.5rem;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .video-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin: 1.5rem 0;
+      justify-content: center;
+    }
+    
+    .video-box {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-width: 300px;
+      max-width: 400px;
+    }
+    
+    video {
+      width: 100%;
+      height: auto;
+      max-height: 300px;
+      background: #000;
+      border: 1px solid var(--gray-color);
+      border-radius: 8px;
+      margin-top: 0.5rem;
+    }
+    
+    #my-video {
+      transform: scaleX(-1);
+    }
+    
+    /* Controls Section */
+    .controls {
+      margin: 2rem 0;
+      padding: 1.5rem;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    input[type="text"], input[type="file"] {
+      width: 100%;
+      padding: 0.8rem;
+      margin: 0.8rem 0;
+      border: 1px solid var(--gray-color);
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+    
+    button {
+      padding: 0.8rem 1.5rem;
+      margin: 0.5rem 0;
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: background-color 0.3s;
+    }
+    
+    button:hover {
+      background: #3367d6;
+    }
+    
+    button:disabled {
+      background: #cccccc;
+      cursor: not-allowed;
+    }
+    
+    /* Status Section */
+    #status {
+      margin: 2rem 0;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    
+    .success {
+      background: #e6f4ea;
+      color: #1e8e3e;
+      border: 1px solid #abdfc1;
+    }
+    
+    .error {
+      background: #fce8e6;
+      color: #d93025;
+      border: 1px solid #f4b9b1;
+    }
+    
+    .info {
+      background: #e8f0fe;
+      color: #1a73e8;
+      border: 1px solid #c6dafc;
+    }
+    
+    .file-link {
+      display: block;
+      margin-top: 0.5rem;
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .file-link:hover {
+      text-decoration: underline;
+    }
+    
+    .file-info {
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 0.3rem;
+    }
+    
+    /* Contact Section */
+    #contact {
+      padding: 3rem 0;
+      background-color: var(--dark-color);
+      color: white;
+      margin: 2rem -2rem;
+      padding: 3rem 2rem;
+    }
+    
+    .contact-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .contact-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    
+    .form-group.full-width {
+      grid-column: span 2;
+    }
+    
+    .contact-form label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+    
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid var(--gray-color);
+      border-radius: 4px;
+      font-size: 1rem;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+    
+    .contact-form textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+    
+    .contact-form button {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+    
+    .contact-form button:hover {
+      background: #3367d6;
+    }
+    
+    .contact-info {
+      margin-top: 3rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+    }
+    
+    .contact-method {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .contact-icon {
+      font-size: 1.5rem;
+      color: var(--primary-color);
+    }
+    
+    /* Footer Styles */
+    footer {
+      background-color: var(--dark-color);
+      color: white;
+      padding: 2rem;
+      margin-top: auto;
+    }
+    
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+    }
+    
+    .footer-section h3 {
+      color: white;
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+    }
+    
+    .footer-section ul {
+      list-style: none;
+    }
+    
+    .footer-section li {
+      margin-bottom: 0.5rem;
+    }
+    
+    .footer-section a {
+      color: var(--gray-color);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    
+    .footer-section a:hover {
+      color: white;
+    }
+    
+    .social-links {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .social-links a {
+      color: white;
+      font-size: 1.5rem;
+    }
+    
+    .copyright {
+      text-align: center;
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--gray-color);
+      font-size: 0.9rem;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .header-container {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      nav ul {
+        gap: 0.5rem;
+      }
+      
+      .video-container {
+        flex-direction: column;
+      }
+      
+      .video-box {
+        max-width: 100%;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .contact-form {
+        grid-template-columns: 1fr;
+      }
+      
+      .form-group.full-width {
+        grid-column: span 1;
+      }
+      
+      .step {
+        padding-left: 60px;
+      }
+      
+      .step:before {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <div class="logo">
+        <span class="logo-icon">📲</span>
+        <span>MobileConnect</span>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#how-it-works">How It Works</a></li>
+          <li><a href="#connection">Connect</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>Secure Peer-to-Peer Video Calls & File Sharing</h1>
+      <p class="app-description">
+        Connect directly with others using WebRTC technology. No servers, no middlemen - just secure, 
+        high-quality video calls and fast file transfers between devices.
+      </p>
+      <a href="#connection" class="cta-button">Start Connecting Now</a>
+    </section>
+
+    <section id="features">
+      <h2 class="section-title">Key Features</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">📞</div>
+          <h3 class="feature-title">High-Quality Video Calls</h3>
+          <p>Crystal clear video calls with real-time communication powered by WebRTC technology.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📁</div>
+          <h3 class="feature-title">Secure File Sharing</h3>
+          <p>Transfer files directly between devices without uploading to any server.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔒</div>
+          <h3 class="feature-title">End-to-End Encryption</h3>
+          <p>Your communications are secured with encryption, keeping your data private.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3 class="feature-title">Lightning Fast</h3>
+          <p>Direct peer-to-peer connection means faster transfers and lower latency.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🌐</div>
+          <h3 class="feature-title">No Installation</h3>
+          <p>Works right in your browser - no apps to download or install.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🆓</div>
+          <h3 class="feature-title">Completely Free</h3>
+          <p>No subscriptions, no fees - just free communication for everyone.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="how-it-works">
+      <h2 class="section-title">How It Works</h2>
+      <div class="steps-container">
+        <div class="step">
+          <h3 class="step-title">Get Your Peer ID</h3>
+          <p>When you load the page, you'll automatically be assigned a unique Peer ID that identifies your device.</p>
+        </div>
+        <div class="step">
+          <h3 class="step-title">Share Your ID</h3>
+          <p>Share your Peer ID with the person you want to connect with. They'll need to enter it to establish a connection.</p>
+        </div>
+        <div class="step">
+          <h3 class="step-title">Connect to Peer</h3>
+          <p>Enter their Peer ID in the connection field and click "Connect" to establish a secure peer-to-peer connection.</p>
+        </div>
+        <div class="step">
+          <h3 class="step-title">Start Communicating</h3>
+          <p>Once connected, you'll see each other's video streams and can start your conversation.</p>
+        </div>
+        <div class="step">
+          <h3 class="step-title">Share Files</h3>
+          <p>Select any file and click "Send File" to transfer it directly to the other peer without any server involvement.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="connection">
+      <h2 class="section-title">Start Connecting</h2>
+      <div id="self">
+        <h3>Your Connection</h3>
+        <p>Your ID: <strong id="my-id">Generating...</strong></p>
+        <div class="video-container">
+          <div class="video-box">
+            <h4>Your Video</h4>
+            <video id="my-video" autoplay muted></video>
+          </div>
+          <div class="video-box">
+            <h4>Peer Video</h4>
+            <video id="peer-video" autoplay></video>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <h3>Connect to Another Peer</h3>
+        <input type="text" id="peer-id" placeholder="Enter Peer ID to connect">
+        <button onclick="connect()">Connect</button>
+      </div>
+
+      <div class="controls">
+        <h3>File Sharing</h3>
+        <input type="file" id="fileInput">
+        <button onclick="sendFile()">Send File</button>
+      </div>
+
+      <div id="status" class="info">Ready to connect...</div>
+    </section>
+
+    <section id="contact">
+      <h2 class="section-title">Contact Us</h2>
+      <div class="contact-container">
+        <p>Have questions or feedback? We'd love to hear from you!</p>
+        
+        <form class="contact-form" id="contactForm">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div class="form-group full-width">
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" name="subject" required>
+          </div>
+          <div class="form-group full-width">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" required></textarea>
+          </div>
+          <div class="form-group full-width">
+            <button type="submit">Send Message</button>
+          </div>
+        </form>
+        
+        <div class="contact-info">
+          <div class="contact-method">
+            <div class="contact-icon">📧</div>
+            <div>
+              <h4>Email</h4>
+              <p>support@mobileconnect.com</p>
+            </div>
+          </div>
+          <div class="contact-method">
+            <div class="contact-icon">🌐</div>
+            <div>
+              <h4>Website</h4>
+              <p>www.mobileconnect.com</p>
+            </div>
+          </div>
+          <div class="contact-method">
+            <div class="contact-icon">💬</div>
+            <div>
+              <h4>Community</h4>
+              <p>Join our Discord</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-section">
+        <h3>PeerConnect</h3>
+        <p>Secure P2P communication platform using WebRTC technology for direct browser-to-browser connections.</p>
+        <div class="social-links">
+          <a href="#" aria-label="Twitter">🐦</a>
+          <a href="#" aria-label="GitHub">💻</a>
+          <a href="#" aria-label="LinkedIn">🔗</a>
+        </div>
+      </div>
+      <div class="footer-section">
+        <h3>Features</h3>
+        <ul>
+          <li><a href="#features">Video Calling</a></li>
+          <li><a href="#features">File Sharing</a></li>
+          <li><a href="#features">Secure Connections</a></li>
+          <li><a href="#features">No Installation</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Resources</h3>
+        <ul>
+          <li><a href="#">Documentation</a></li>
+          <li><a href="#">API Reference</a></li>
+          <li><a href="#">GitHub Repository</a></li>
+          <li><a href="#">Support</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Legal</h3>
+        <ul>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Cookie Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="copyright">
+      &copy; 2025 📲 MobileConnect. All rights reserved.
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+  <script>
+    // PeerJS variables
+    let peer;
+    let currentCall;
+    let currentConn;
+    let myStream;
+
+    // Initialize PeerJS
+    function initializePeer() {
+      // Create a new Peer with a random ID
+      peer = new Peer();
+
+      peer.on('open', (id) => {
+        document.getElementById('my-id').textContent = id;
+        updateStatus(`Your ID is: ${id}`, 'info');
+      });
+
+      peer.on('error', (err) => {
+        console.error('Peer error:', err);
+        updateStatus(`Error: ${err.message}`, 'error');
+      });
+
+      // Handle incoming calls
+      peer.on('call', (call) => {
+        updateStatus(`Incoming call from ${call.peer}`, 'info');
+        
+        // Answer the call with our video/audio stream
+        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+          .then((stream) => {
+            myStream = stream;
+            document.getElementById('my-video').srcObject = stream;
+            call.answer(stream);
+            currentCall = call;
+            
+            call.on('stream', (remoteStream) => {
+              document.getElementById('peer-video').srcObject = remoteStream;
+              updateStatus(`Call connected with ${call.peer}`, 'success');
+            });
+            
+            call.on('close', () => {
+              updateStatus('Call ended', 'info');
+              stopStream(myStream);
+              currentCall = null;
+            });
+            
+            call.on('error', (err) => {
+              console.error('Call error:', err);
+              updateStatus(`Call error: ${err.message}`, 'error');
+            });
+          })
+          .catch((err) => {
+            console.error('Failed to get local stream', err);
+            updateStatus(`Error: ${err.message}`, 'error');
+          });
+      });
+
+      // Handle incoming data connections
+      peer.on('connection', (conn) => {
+        updateStatus(`Connected to ${conn.peer} for data`, 'info');
+        currentConn = conn;
+        
+        conn.on('data', (data) => {
+          if (data.type === 'file') {
+            handleReceivedFile(data);
+          }
+        });
+        
+        conn.on('close', () => {
+          updateStatus('Data connection closed', 'info');
+          currentConn = null;
+        });
+        
+        conn.on('error', (err) => {
+          console.error('Connection error:', err);
+          updateStatus(`Connection error: ${err.message}`, 'error');
+        });
+      });
+    }
+
+    // Connect to another peer
+    function connect() {
+      const peerId = document.getElementById('peer-id').value.trim();
+      if (!peerId) {
+        updateStatus('Please enter a Peer ID', 'error');
+        return;
+      }
+
+      updateStatus(`Connecting to ${peerId}...`, 'info');
+
+      // First establish data connection
+      currentConn = peer.connect(peerId);
+      
+      currentConn.on('open', () => {
+        updateStatus(`Connected to ${peerId} for data`, 'success');
+        
+        // Then establish call
+        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+          .then((stream) => {
+            myStream = stream;
+            document.getElementById('my-video').srcObject = stream;
+            const call = peer.call(peerId, stream);
+            currentCall = call;
+            
+            call.on('stream', (remoteStream) => {
+              document.getElementById('peer-video').srcObject = remoteStream;
+              updateStatus(`Call connected with ${peerId}`, 'success');
+            });
+            
+            call.on('close', () => {
+              updateStatus('Call ended', 'info');
+              stopStream(myStream);
+              currentCall = null;
+            });
+            
+            call.on('error', (err) => {
+              console.error('Call error:', err);
+              updateStatus(`Call error: ${err.message}`, 'error');
+            });
+          })
+          .catch((err) => {
+            console.error('Failed to get local stream', err);
+            updateStatus(`Error: ${err.message}`, 'error');
+          });
+      });
+      
+      currentConn.on('error', (err) => {
+        console.error('Connection error:', err);
+        updateStatus(`Connection error: ${err.message}`, 'error');
+      });
+    }
+
+    // Stop media stream
+    function stopStream(stream) {
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+      }
+    }
+
+    // Send a file to the connected peer
+    function sendFile() {
+      if (!currentConn || currentConn.open !== true) {
+        updateStatus('Not connected to any peer', 'error');
+        return;
+      }
+
+      const fileInput = document.getElementById('fileInput');
+      if (!fileInput.files || fileInput.files.length === 0) {
+        updateStatus('Please select a file first', 'error');
+        return;
+      }
+
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+
+      reader.onload = (event) => {
+        const fileData = event.target.result;
+        currentConn.send({
+          type: 'file',
+          name: file.name,
+          size: file.size,
+          data: fileData,
+          mimeType: file.type,
+          timestamp: new Date().toISOString()
+        });
+        updateStatus(`Sent file: ${file.name} (${formatFileSize(file.size)})`, 'success');
+      };
+
+      reader.onerror = (error) => {
+        updateStatus(`Error reading file: ${error}`, 'error');
+      };
+
+      reader.readAsDataURL(file);
+    }
+
+    // Handle received file
+    function handleReceivedFile(data) {
+      const timestamp = data.timestamp ? new Date(data.timestamp).toLocaleString() : 'just now';
+      updateStatus(`Received file at ${timestamp}`, 'success');
+      
+      // Create download section
+      const fileInfo = document.createElement('div');
+      fileInfo.innerHTML = `
+        <a href="${data.data}" download="${data.name}" class="file-link">
+          Download ${data.name}
+        </a>
+        <div class="file-info">
+          Size: ${formatFileSize(data.size)} | Type: ${data.mimeType || 'unknown'}
+        </div>
+      `;
+      
+      const statusDiv = document.getElementById('status');
+      statusDiv.appendChild(fileInfo);
+      
+      // Auto-scroll to bottom
+      statusDiv.scrollTop = statusDiv.scrollHeight;
+    }
+
+    // Update status message
+    function updateStatus(message, type) {
+      const statusDiv = document.getElementById('status');
+      statusDiv.textContent = message;
+      statusDiv.className = type;
+    }
+
+    // Format file size
+    function formatFileSize(bytes) {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    // Handle contact form submission
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      // In a real application, you would send the form data to a server
+      alert('Thank you for your message! We will get back to you soon.');
+      this.reset();
+    });
+
+    // Initialize when page loads
+    window.onload = initializePeer;
+
+    // Clean up on page unload
+    window.onbeforeunload = function() {
+      if (currentCall) currentCall.close();
+      if (currentConn) currentConn.close();
+      if (myStream) stopStream(myStream);
+      if (peer) peer.destroy();
+    };
+  </script>
+</body>
+</html>
